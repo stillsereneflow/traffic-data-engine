@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+build/
+dist/
+
+# Data, model weights and pipeline outputs
+data/
+weights/
+out/
+*.pt
+*.pth
+*.safetensors
+
+# IDE
+.vscode/
+.idea/

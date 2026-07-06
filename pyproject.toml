@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "traffic-data-engine"
+version = "0.1.0"
+description = "Auto-labeling and VLM scene understanding pipeline for driving data"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Yi Liu" }]
+requires-python = ">=3.10"
+dependencies = [
+  "numpy>=1.26",
+  "pyyaml>=6.0",
+  "pillow>=10.0",
+]
+
+[project.optional-dependencies]
+# GPU pipeline stages; the core library and tests run without them.
+models = [
+  "torch>=2.6",
+  "transformers>=4.49",
+  "accelerate>=1.0",
+  "qwen-vl-utils>=0.0.8",
+]
+dev = ["pytest>=8.0", "ruff>=0.6"]
+
+[project.scripts]
+tde = "traffic_data_engine.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
