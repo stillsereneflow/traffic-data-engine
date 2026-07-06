@@ -97,12 +97,15 @@ def evaluate_frames(
 ) -> EvalResult:
     """Per-class AP and mAP of predicted frames against ground-truth frames.
 
-    Frames are aligned by ``image_path``; a prediction for an image that has
-    no ground-truth frame is an error, not a silent skip.
+    Frames are aligned by image *file name* (so Windows and POSIX paths to
+    the same files compare equal); a prediction for an image that has no
+    ground-truth frame is an error, not a silent skip.
     """
-    gt_by_image = {frame.image_path: frame for frame in gt_frames}
+    from pathlib import Path
+
+    gt_by_image = {Path(frame.image_path).name: frame for frame in gt_frames}
     for frame in pred_frames:
-        if frame.image_path not in gt_by_image:
+        if Path(frame.image_path).name not in gt_by_image:
             raise ValueError(f"no ground truth for image '{frame.image_path}'")
 
     if labels is None:
@@ -120,7 +123,8 @@ def evaluate_frames(
         )
         for frame in pred_frames:
             preds = [d for d in frame.detections if d.label == label]
-            gts = [d for d in gt_by_image[frame.image_path].detections if d.label == label]
+            gt_frame = gt_by_image[Path(frame.image_path).name]
+            gts = [d for d in gt_frame.detections if d.label == label]
             if not preds:
                 continue
             pred_boxes = np.array([d.box_xyxy for d in preds])
