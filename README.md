@@ -51,6 +51,45 @@ tde segment --frames out/frames.json --out out/frames_seg.json --render out/vis_
 
 ![urban street with masks](docs/images/segment_urban_street.jpg)
 
+Open vocabulary pays off on long-tail scenes — `traffic cone` is not a COCO
+class, yet a night-time work zone comes back fully labeled:
+
+![night construction](docs/images/detect_construction_night.jpg)
+
+## Label quality on COCO street classes
+
+80 COCO val2017 images rich in street-class objects (697 ground-truth
+boxes), zero-shot pseudo-labels evaluated with this repo's from-scratch AP
+(`tde eval`, IoU 0.5):
+
+| class | AP | | class | AP |
+| --- | --- | --- | --- | --- |
+| motorcycle | 0.805 | | car | 0.557 |
+| bus | 0.720 | | stop sign | 0.505 |
+| bicycle | 0.713 | | traffic light | 0.487 |
+| person | 0.694 | | truck | 0.378 |
+
+**mAP@0.5 = 0.607** — a solid starting point for human-in-the-loop review,
+given no training was involved. Reproduce with
+`python scripts/fetch_coco_street.py` followed by `tde detect` + `tde eval`.
+
+![coco example](docs/images/eval_coco_example.jpg)
+
+## Long-tail mining
+
+CLIP retrieval over the unlabeled pool (`tde mine-index` + `tde mine`):
+each strip shows the top-3 matches for a free-text query, scores overlaid.
+
+![mining construction](docs/images/mine_construction.png)
+
+![mining night](docs/images/mine_night.png)
+
+![mining snow](docs/images/mine_snow.png)
+
+Honest limitation: a query for "a cyclist riding between cars" misses the
+cyclist sample — the rider is small in frame, a known weakness of
+CLIP ViT-B/32 global embeddings; box-level embeddings are the planned fix.
+
 Image sources and licenses: [docs/DATA.md](docs/DATA.md).
 
 ## What makes it different
