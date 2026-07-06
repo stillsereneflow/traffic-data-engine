@@ -80,7 +80,7 @@ constructor, so the core library installs and tests cleanly without the
 ## Roadmap
 
 - [x] M0: scaffolding — package layout, CI, design doc
-- [ ] M1: core data model + from-scratch AP evaluation + taxonomy/prompt
+- [x] M1: core data model + from-scratch AP evaluation + taxonomy/prompt
       builder, fully unit-tested
 - [ ] M2: detection stage on real images (Grounding DINO) + demo outputs
 - [ ] M3: SAM segmentation stage + RLE mask storage
