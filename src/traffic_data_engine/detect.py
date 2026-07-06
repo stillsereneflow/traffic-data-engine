@@ -95,9 +95,14 @@ class GroundingDinoDetector:
         )[0]
 
         frame = Frame(image_path=str(image_path), width=image.width, height=image.height)
+        boxes = results["boxes"]
         # transformers renamed the phrase field from "labels" to "text_labels".
-        phrases = results.get("text_labels", results.get("labels"))
-        for box, score, phrase in zip(results["boxes"], results["scores"], phrases, strict=True):
+        phrases = list(results.get("text_labels", results.get("labels")) or [])
+        # Quirk: an image with zero detections still yields one empty phrase,
+        # so align the phrase list with the boxes before zipping strictly.
+        if len(phrases) != len(boxes):
+            phrases = phrases[: len(boxes)] + [""] * (len(boxes) - len(phrases))
+        for box, score, phrase in zip(boxes, results["scores"], phrases, strict=True):
             label = normalize_label(str(phrase), classes)
             if label is None:
                 continue

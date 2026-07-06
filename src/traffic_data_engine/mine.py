@@ -11,6 +11,14 @@ from pathlib import Path
 import numpy as np
 
 
+def _embedding_tensor(features):
+    """Newer transformers wrap the projected embedding in a model output
+    (as ``pooler_output``); older versions return the tensor directly."""
+    if hasattr(features, "pooler_output"):
+        return features.pooler_output
+    return features
+
+
 def rank_by_similarity(
     query: np.ndarray, index: np.ndarray, top_k: int
 ) -> tuple[np.ndarray, np.ndarray]:
@@ -58,7 +66,7 @@ class ClipMiner:
             ]
             inputs = self.processor(images=images, return_tensors="pt").to(self.device)
             with self._torch.no_grad():
-                features = self.model.get_image_features(**inputs)
+                features = _embedding_tensor(self.model.get_image_features(**inputs))
             chunks.append(features.cpu().numpy())
         embeddings = np.concatenate(chunks, axis=0)
         return embeddings / np.linalg.norm(embeddings, axis=1, keepdims=True)
@@ -66,6 +74,6 @@ class ClipMiner:
     def embed_text(self, text: str) -> np.ndarray:
         inputs = self.processor(text=[text], return_tensors="pt", padding=True).to(self.device)
         with self._torch.no_grad():
-            features = self.model.get_text_features(**inputs)
+            features = _embedding_tensor(self.model.get_text_features(**inputs))
         vector = features[0].cpu().numpy()
         return vector / np.linalg.norm(vector)
