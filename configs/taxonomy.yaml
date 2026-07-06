@@ -1,0 +1,176 @@
+# Traffic-domain scene taxonomy for VLM tagging.
+#
+# Groups and tags are informed by traffic engineering practice: scene types
+# follow road functional classes, control types follow intersection control
+# taxonomy, and the VRU / risky-behavior groups mirror the interaction and
+# violation categories used in safety analysis. Every tag carries a `hint`
+# telling the model what visual evidence justifies the tag.
+version: 1
+groups:
+  - name: scene_type
+    zh: 场景类型
+    select: single
+    hint: Choose the single best description of where the ego vehicle is driving.
+    options:
+      - name: urban_street
+        zh: 城市道路
+        hint: city street with buildings, shops or mixed traffic
+      - name: highway
+        zh: 高速/快速路
+        hint: divided high-speed road with ramps and gantries, no signals
+      - name: intersection
+        zh: 交叉口
+        hint: junction area including its approaches, any control type
+      - name: roundabout
+        zh: 环形交叉口
+        hint: circular junction where entering traffic yields
+      - name: residential
+        zh: 居住区道路
+        hint: narrow low-speed street, often lined with parked cars
+      - name: rural_road
+        zh: 乡村公路
+        hint: undivided road outside built-up areas
+      - name: parking_area
+        zh: 停车场/园区
+        hint: parking lot, campus or service area
+      - name: tunnel_or_bridge
+        zh: 隧道/桥梁
+        hint: enclosed tunnel or bridge deck
+
+  - name: conditions
+    zh: 环境条件
+    select: multi
+    hint: Select every lighting and weather condition that is clearly visible.
+    options:
+      - name: clear_day
+        zh: 白天晴好
+        hint: daylight with good visibility
+      - name: rain
+        zh: 降雨
+        hint: falling rain, active wipers or heavy spray
+      - name: wet_road
+        zh: 路面湿滑
+        hint: reflective or wet pavement, even after the rain has stopped
+      - name: snow
+        zh: 降雪/积雪
+        hint: falling snow or snow on the road surface
+      - name: fog
+        zh: 雾
+        hint: visibly reduced sight distance from fog or haze
+      - name: night
+        zh: 夜间
+        hint: dark scene lit by headlights or street lamps
+      - name: dawn_dusk
+        zh: 黎明/黄昏
+        hint: low sun, long shadows, transitional light
+      - name: glare_backlight
+        zh: 眩光/逆光
+        hint: strong glare or backlight washing out part of the image
+
+  - name: road_events
+    zh: 道路事件
+    select: multi
+    hint: Select events that change how the road can be used.
+    options:
+      - name: construction_zone
+        zh: 施工区
+        hint: cones, barriers, temporary signs, machinery or workers
+      - name: accident_scene
+        zh: 事故现场
+        hint: collided or damaged vehicles, people inspecting damage
+      - name: road_damage_or_debris
+        zh: 道路破损/障碍物
+        hint: potholes, fallen cargo or foreign objects on the carriageway
+      - name: flooded_road
+        zh: 道路积水
+        hint: standing water covering part of the roadway
+      - name: emergency_vehicle
+        zh: 特种车辆
+        hint: police, ambulance or fire vehicle, especially with lights on
+      - name: animal_on_road
+        zh: 动物上路
+        hint: any animal on or immediately beside the carriageway
+      - name: none_observed
+        zh: 无
+        hint: no such event is visible
+
+  - name: traffic_control
+    zh: 交通控制
+    select: multi
+    hint: Select every traffic-control device that applies to the ego vehicle's path.
+    options:
+      - name: traffic_signal
+        zh: 信号灯控制
+        hint: traffic lights governing the ego direction
+      - name: stop_or_yield_sign
+        zh: 停车/让行标志
+        hint: STOP or YIELD sign at the junction
+      - name: crosswalk_marking
+        zh: 人行横道
+        hint: zebra markings on the ego vehicle's path
+      - name: school_zone
+        zh: 学校区域
+        hint: school zone signs or markings
+      - name: police_or_flagger
+        zh: 人工指挥
+        hint: police officer or flagger directing traffic
+      - name: temporary_control
+        zh: 临时交通控制
+        hint: temporary lights or signs, for example in work zones
+      - name: no_visible_control
+        zh: 无可见控制
+        hint: none of the above is visible
+
+  - name: vru_interaction
+    zh: 弱势交通参与者
+    select: multi
+    hint: Select every vulnerable-road-user situation the ego vehicle may need to react to.
+    options:
+      - name: pedestrian_on_roadway
+        zh: 行人在车行道
+        hint: pedestrian physically on the carriageway
+      - name: pedestrian_about_to_cross
+        zh: 行人欲穿越
+        hint: pedestrian at the curb facing traffic, waiting or stepping off
+      - name: cyclist_in_lane
+        zh: 自行车占道
+        hint: cyclist riding within a motor-vehicle lane
+      - name: motorcyclist_close
+        zh: 摩托车近距
+        hint: motorcycle or scooter close to the ego path or lane-splitting
+      - name: children_or_elderly
+        zh: 儿童/老人
+        hint: visibly young children or elderly people near the roadway
+      - name: personal_mobility
+        zh: 个人代步工具
+        hint: e-scooters, skateboards or wheelchairs near traffic
+      - name: none_observed
+        zh: 无
+        hint: no vulnerable road users are visible
+
+  - name: risky_behavior
+    zh: 风险行为
+    select: multi
+    hint: Select clearly visible risky or rule-breaking behavior by any road user.
+    options:
+      - name: cut_in
+        zh: 加塞/急变道
+        hint: vehicle crossing lane markings into another vehicle's headway
+      - name: running_red_light
+        zh: 闯红灯
+        hint: road user entering against a clearly visible red signal
+      - name: jaywalking
+        zh: 行人违规穿行
+        hint: pedestrian crossing away from crosswalks through moving traffic
+      - name: wrong_way_or_reversing
+        zh: 逆行/倒车
+        hint: vehicle moving against the direction of its lane
+      - name: illegal_parking_blocking
+        zh: 违停占道
+        hint: parked vehicle blocking a travel lane or bike lane
+      - name: door_opening
+        zh: 开门杀风险
+        hint: parked car door opening toward moving traffic
+      - name: none_observed
+        zh: 无
+        hint: no risky behavior is visible
