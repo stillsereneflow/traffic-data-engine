@@ -4,8 +4,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
+from .rle import decode
 from .schema import Frame
 
 # Colorblind-friendly palette; labels are assigned deterministically.
@@ -25,9 +27,25 @@ def _color_for(label: str) -> tuple[int, int, int]:
     return _PALETTE[hash(label) % len(_PALETTE)]
 
 
+def _overlay_masks(image: Image.Image, frame: Frame, min_score: float) -> Image.Image:
+    """Blends every detection mask over the image as a semi-transparent fill."""
+    overlay = np.zeros((image.height, image.width, 4), dtype=np.uint8)
+    for det in frame.detections:
+        if det.mask_rle is None or det.score < min_score:
+            continue
+        mask = decode(det.mask_rle).astype(bool)
+        overlay[mask] = (*_color_for(det.label), 110)
+    if not overlay[..., 3].any():
+        return image
+    return Image.alpha_composite(
+        image.convert("RGBA"), Image.fromarray(overlay, "RGBA")
+    ).convert("RGB")
+
+
 def draw_frame(frame: Frame, out_path: str | Path, min_score: float = 0.0) -> Path:
-    """Draws boxes and label:score captions; returns the output path."""
+    """Draws masks (when present), boxes and label:score captions."""
     image = Image.open(frame.image_path).convert("RGB")
+    image = _overlay_masks(image, frame, min_score)
     draw = ImageDraw.Draw(image)
     line_width = max(2, image.width // 400)
     try:

@@ -46,6 +46,14 @@ def nms(boxes: np.ndarray, scores: np.ndarray, iou_threshold: float) -> np.ndarr
     return np.array(keep, dtype=np.int64)
 
 
+def clip_boxes(boxes: np.ndarray, width: float, height: float) -> np.ndarray:
+    """Clamps (x1, y1, x2, y2) boxes to the image extent [0, width] x [0, height]."""
+    boxes = np.asarray(boxes, dtype=np.float64).reshape(-1, 4).copy()
+    boxes[:, 0::2] = np.clip(boxes[:, 0::2], 0.0, float(width))
+    boxes[:, 1::2] = np.clip(boxes[:, 1::2], 0.0, float(height))
+    return boxes
+
+
 def xywh_to_xyxy(boxes: np.ndarray) -> np.ndarray:
     """COCO (x, y, w, h) -> (x1, y1, x2, y2)."""
     boxes = np.asarray(boxes, dtype=np.float64).reshape(-1, 4)
