@@ -39,6 +39,34 @@ SAMPLES = [
         "author": "joiseyshowaa",
         "license": "CC BY-SA 2.0",
     },
+    {
+        "file": "construction_night.jpg",
+        "title": (
+            "Night-time road resurfacing operation during Chatham Waterfront Bus Station "
+            "improvement works showing Tarmac vehicles, workers, and road closure on "
+            "Globe Lane, Chatham, Kent, England.jpg"
+        ),
+        "author": "OathOn",
+        "license": "CC BY-SA 4.0",
+    },
+    {
+        "file": "night_traffic.jpg",
+        "title": "Cars are driving down the street at night 2025.jpg",
+        "author": "Pattaya Patrol",
+        "license": "CC BY-SA 4.0",
+    },
+    {
+        "file": "cyclist_street.jpg",
+        "title": "Reckless Domino's Cyclist (16020774083).jpg",
+        "author": "Billie Grace Ward",
+        "license": "CC BY 2.0",
+    },
+    {
+        "file": "snow_street.jpg",
+        "title": "Dallas snow 2021.jpg",
+        "author": "Matthew T Rader",
+        "license": "CC BY-SA 4.0",
+    },
 ]
 
 WIDTH = 1600  # server-side downscale keeps the repo demo light
