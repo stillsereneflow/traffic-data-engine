@@ -82,7 +82,7 @@ constructor, so the core library installs and tests cleanly without the
 - [x] M0: scaffolding — package layout, CI, design doc
 - [x] M1: core data model + from-scratch AP evaluation + taxonomy/prompt
       builder, fully unit-tested
-- [ ] M2: detection stage on real images (Grounding DINO) + demo outputs
+- [x] M2: detection stage on real images (Grounding DINO) + demo outputs
 - [ ] M3: SAM segmentation stage + RLE mask storage
 - [ ] M4: VLM scene tagging with the traffic taxonomy (Qwen2.5-VL, 4-bit)
 - [ ] M5: CLIP long-tail mining + COCO street-class evaluation report

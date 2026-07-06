@@ -22,12 +22,28 @@ images ──> detect ──> segment ──> tag ──────> Frame JSON
 | Stage | Backbone | Status |
 | --- | --- | --- |
 | Core data model, from-scratch mAP, taxonomy & prompts | numpy only | ✅ M1 |
-| `detect` — open-vocabulary detection | Grounding DINO (tiny) | 🚧 M2 |
+| `detect` — open-vocabulary detection | Grounding DINO (tiny) | ✅ M2 |
 | `segment` — box-prompted masks | SAM (ViT-B) | 🚧 M3 |
 | `tag` — scene/intent/violation tagging | Qwen2.5-VL 3B (4-bit) | 🚧 M4 |
 | `mine` — long-tail retrieval | CLIP ViT-B/32 | 🚧 M5 |
 
 Architecture and milestones: [docs/DESIGN.md](docs/DESIGN.md).
+
+## Detection demo
+
+Open-vocabulary pseudo-labels on real street scenes (RTX 3060 Laptop, 6 GB),
+produced by:
+
+```bash
+python scripts/fetch_samples.py   # CC-licensed sample images, see docs/DATA.md
+tde detect --images data/samples --out out/frames.json --render out/vis
+```
+
+![dashcam intersection](docs/images/detect_dashcam_intersection.jpg)
+
+![urban street](docs/images/detect_urban_street.jpg)
+
+Image sources and licenses: [docs/DATA.md](docs/DATA.md).
 
 ## What makes it different
 
