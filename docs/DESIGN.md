@@ -83,7 +83,7 @@ constructor, so the core library installs and tests cleanly without the
 - [x] M1: core data model + from-scratch AP evaluation + taxonomy/prompt
       builder, fully unit-tested
 - [x] M2: detection stage on real images (Grounding DINO) + demo outputs
-- [ ] M3: SAM segmentation stage + RLE mask storage
+- [x] M3: SAM segmentation stage + RLE mask storage
 - [ ] M4: VLM scene tagging with the traffic taxonomy (Qwen2.5-VL, 4-bit)
 - [ ] M5: CLIP long-tail mining + COCO street-class evaluation report
 - [ ] M6: BDD100K adapter and end-to-end quality report in the README

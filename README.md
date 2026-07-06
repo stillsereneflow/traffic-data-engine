@@ -23,7 +23,7 @@ images ──> detect ──> segment ──> tag ──────> Frame JSON
 | --- | --- | --- |
 | Core data model, from-scratch mAP, taxonomy & prompts | numpy only | ✅ M1 |
 | `detect` — open-vocabulary detection | Grounding DINO (tiny) | ✅ M2 |
-| `segment` — box-prompted masks | SAM (ViT-B) | 🚧 M3 |
+| `segment` — box-prompted masks | SAM (ViT-B) | ✅ M3 |
 | `tag` — scene/intent/violation tagging | Qwen2.5-VL 3B (4-bit) | 🚧 M4 |
 | `mine` — long-tail retrieval | CLIP ViT-B/32 | 🚧 M5 |
 
@@ -42,6 +42,14 @@ tde detect --images data/samples --out out/frames.json --render out/vis
 ![dashcam intersection](docs/images/detect_dashcam_intersection.jpg)
 
 ![urban street](docs/images/detect_urban_street.jpg)
+
+Adding pixel-accurate SAM masks (stored as RLE inside the same Frame JSON):
+
+```bash
+tde segment --frames out/frames.json --out out/frames_seg.json --render out/vis_seg
+```
+
+![urban street with masks](docs/images/segment_urban_street.jpg)
 
 Image sources and licenses: [docs/DATA.md](docs/DATA.md).
 
@@ -71,7 +79,7 @@ you can step through in a debugger.
 
 ```bash
 pip install -e .[dev]
-pytest -q          # 30 tests, no GPU or model downloads required
+pytest -q          # 37 tests, no GPU or model downloads required
 ruff check .
 ```
 
