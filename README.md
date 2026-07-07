@@ -24,7 +24,7 @@ images ──> detect ──> segment ──> tag ──────> Frame JSON
 | Core data model, from-scratch mAP, taxonomy & prompts | numpy only | ✅ M1 |
 | `detect` — open-vocabulary detection | Grounding DINO (tiny) | ✅ M2 |
 | `segment` — box-prompted masks | SAM (ViT-B) | ✅ M3 |
-| `tag` — scene/intent/violation tagging | Qwen2.5-VL 3B (4-bit) | 🚧 M4 |
+| `tag` — scene/intent/violation tagging | Qwen2.5-VL 3B (8-bit) | ✅ M4 |
 | `mine` — long-tail retrieval | CLIP ViT-B/32 | 🚧 M5 |
 
 Architecture and milestones: [docs/DESIGN.md](docs/DESIGN.md).
@@ -55,6 +55,24 @@ Open vocabulary pays off on long-tail scenes — `traffic cone` is not a COCO
 class, yet a night-time work zone comes back fully labeled:
 
 ![night construction](docs/images/detect_construction_night.jpg)
+
+## Scene tagging with the traffic taxonomy
+
+Qwen2.5-VL (3B, 8-bit, ~4 GB VRAM) answers a structured prompt generated
+from the taxonomy; every response is validated and rendered as a bilingual
+scene card (`tde tag --render`):
+
+![construction night card](docs/images/tag_construction_night.jpg)
+
+The taxonomy's domain knowledge shows: the night work zone is tagged
+`temporary_control` (临时交通控制), not just "cones present". And the card
+below catches a cyclist crossing against a visible red light:
+
+![cyclist card](docs/images/tag_cyclist_street.jpg)
+
+Validation keeps the labels auditable — in this run the model invented
+`motorcycle_close` (the taxonomy says `motorcyclist_close`) and the tag was
+rejected and logged rather than silently stored.
 
 ## Label quality on COCO street classes
 
