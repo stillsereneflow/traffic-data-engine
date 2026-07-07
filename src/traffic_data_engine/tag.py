@@ -39,9 +39,10 @@ class QwenSceneTagger:
                 import bitsandbytes  # noqa: F401  (probe availability)
                 from transformers import BitsAndBytesConfig
 
-                kwargs["quantization_config"] = BitsAndBytesConfig(
-                    load_in_4bit=True, bnb_4bit_compute_dtype=torch.float16
-                )
+                # 8-bit: fits a 3B VLM into ~4 GB and is numerically much
+                # sturdier than 4-bit on Windows builds of bitsandbytes,
+                # which we observed corrupting generated tokens.
+                kwargs["quantization_config"] = BitsAndBytesConfig(load_in_8bit=True)
             except ImportError:
                 quantize = False
         if not quantize:

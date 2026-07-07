@@ -53,6 +53,18 @@ def test_parse_enforces_single_select():
     assert "scene_type:urban_street" in rejected
 
 
+def test_parse_salvages_tag_with_echoed_hint():
+    text = '{"scene_type": ["urban_street: city street with buildings, shops or mixed traffic"]}'
+    tags, rejected = parse_scene_response(text, TAXONOMY)
+    assert tags["scene_type"] == ["urban_street"]
+    assert rejected == []
+    # Invented near-miss names are still rejected.
+    text2 = '{"vru_interaction": ["motorcycle_close"]}'
+    tags2, rejected2 = parse_scene_response(text2, TAXONOMY)
+    assert tags2["vru_interaction"] == []
+    assert "vru_interaction:motorcycle_close" in rejected2
+
+
 def test_parse_coerces_scalar_to_list_and_dedupes():
     text = '{"scene_type": "highway", "conditions": ["rain", "rain"]}'
     tags, _ = parse_scene_response(text, TAXONOMY)

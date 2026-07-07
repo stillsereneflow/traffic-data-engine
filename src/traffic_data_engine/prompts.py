@@ -56,6 +56,22 @@ def extract_json(text: str) -> dict:
     return json.loads(text[start : end + 1])
 
 
+def _normalize_tag(value, valid_names: set[str]) -> str | None:
+    """Maps a model-provided value onto a taxonomy tag, or None.
+
+    Accepts an exact tag name, or a tag name followed by a colon and echoed
+    hint text ("urban_street: city street with ..."), which small VLMs
+    produce occasionally. Anything else — including near-miss invented
+    names — is rejected.
+    """
+    if not isinstance(value, str):
+        return None
+    if value in valid_names:
+        return value
+    head = value.split(":", 1)[0].strip()
+    return head if head in valid_names else None
+
+
 def parse_scene_response(text: str, taxonomy: Taxonomy) -> tuple[dict[str, list[str]], list[str]]:
     """Validated tags per group plus a list of rejected items.
 
@@ -77,9 +93,10 @@ def parse_scene_response(text: str, taxonomy: Taxonomy) -> tuple[dict[str, list[
             values = [values]
         selected: list[str] = []
         for value in values:
-            if isinstance(value, str) and value in valid_names:
-                if value not in selected:
-                    selected.append(value)
+            normalized = _normalize_tag(value, valid_names)
+            if normalized is not None:
+                if normalized not in selected:
+                    selected.append(normalized)
             else:
                 rejected.append(f"{group_name}:{value}")
         if group.select == "single" and len(selected) > 1:
