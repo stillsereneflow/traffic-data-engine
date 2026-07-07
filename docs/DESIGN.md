@@ -40,7 +40,7 @@ images ──> detect ──> segment ──> tag ──────> Frame JSON
   classes ("wheelchair", "fallen tree") cost nothing to add.
 - **segment** — SAM (`facebook/sam-vit-base`) prompted with detected boxes;
   masks are stored as COCO-style RLE inside the Frame.
-- **tag** — Qwen2.5-VL (3B, 4-bit) answers a structured prompt generated
+- **tag** — Qwen2.5-VL (3B, 8-bit) answers a structured prompt generated
   from `configs/taxonomy.yaml` and must return strict JSON; responses are
   validated against the taxonomy and invalid tags are dropped.
 - **eval** — matches pseudo-labels against ground-truth boxes (greedy by

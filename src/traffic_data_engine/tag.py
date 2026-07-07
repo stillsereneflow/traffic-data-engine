@@ -2,7 +2,7 @@
 
 The model must return strict JSON; the response is validated against the
 taxonomy by ``prompts.parse_scene_response`` and rejected items are surfaced,
-never silently kept. The model loads in 4-bit when bitsandbytes is
+never silently kept. The model loads in 8-bit when bitsandbytes is
 available and falls back to fp16 with CPU offload otherwise — either way it
 runs next to a 6 GB GPU.
 """

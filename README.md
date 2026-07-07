@@ -25,7 +25,7 @@ images ──> detect ──> segment ──> tag ──────> Frame JSON
 | `detect` — open-vocabulary detection | Grounding DINO (tiny) | ✅ M2 |
 | `segment` — box-prompted masks | SAM (ViT-B) | ✅ M3 |
 | `tag` — scene/intent/violation tagging | Qwen2.5-VL 3B (8-bit) | ✅ M4 |
-| `mine` — long-tail retrieval | CLIP ViT-B/32 | 🚧 M5 |
+| `mine` — long-tail retrieval | CLIP ViT-B/32 | ✅ M5 |
 
 Architecture and milestones: [docs/DESIGN.md](docs/DESIGN.md).
 
@@ -136,7 +136,7 @@ you can step through in a debugger.
 
 ```bash
 pip install -e .[dev]
-pytest -q          # 37 tests, no GPU or model downloads required
+pytest -q          # 45 tests, no GPU or model downloads required
 ruff check .
 ```
 
