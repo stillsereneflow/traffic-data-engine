@@ -74,6 +74,14 @@ Validation keeps the labels auditable — in this run the model invented
 `motorcycle_close` (the taxonomy says `motorcyclist_close`) and the tag was
 rejected and logged rather than silently stored.
 
+Known limitation (added Nov 2026): the 3B model over-reports vulnerable
+road users. In a later evaluation, run with a JSON tagging prompt from a
+related project on 44 hand-checked driving images (13 with pedestrians,
+31 without), it found all 13 but was correct on only 5 of the 31
+negatives at fp16, 2 of 31 at 8-bit and 4 of 31 at 4-bit NF4. Treat
+pedestrian/VRU tags as high-recall, low-specificity hints for human
+review, not as labels.
+
 ## Label quality on COCO street classes
 
 80 COCO val2017 images rich in street-class objects (697 ground-truth
