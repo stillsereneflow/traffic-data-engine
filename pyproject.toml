@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Auto-labeling and VLM scene understanding pipeline for driving data"
 readme = "README.md"
 license = { text = "MIT" }
-authors = [{ name = "Yi Liu" }]
+authors = [{ name = "Qi Chen" }]
 requires-python = ">=3.10"
 dependencies = [
   "numpy>=1.26",
